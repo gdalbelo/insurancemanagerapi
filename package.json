@@ -8,17 +8,9 @@
     "start": "node --no-warnings server.js",
     "dev": "nodemon --no-warnings server.js "
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/gdalbelo/api-insurancemanager.git"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/gdalbelo/api-insurancemanager"
-  },
-  "homepage": "https://github.com/gdalbelo/api-insurancemanager#readme",
   "dependencies": {
     "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
