@@ -16,7 +16,7 @@ function topNewsRepository() {
 }
 
 function findInsuranceByIdRepository(id) {
-  return Insurance.findById(id).populate("user");
+  return Insurance.user.findById(id).populate("user");
 }
 
 function countInsurances() {
@@ -35,7 +35,6 @@ function findInsurancesByUserIdRepository(id) {
   return Insurance.find({
     user: id,
   })
-    .sort({ _id: -1 })
     .populate("user");
 }
 

@@ -10,12 +10,12 @@ postRouter.get("/", insuranceController.findAllInsurancesController);
 postRouter.get("/top", insuranceController.topNewsController);
 postRouter.get("/search", insuranceController.searchInsuranceController);
 
-postRouter.use(authMiddleware);
+//postRouter.use(authMiddleware);
 postRouter.post("/create", insuranceController.createInsuranceController);
 
 //postRouter.use(validId);
-postRouter.get("/byIdPost/:id", insuranceController.findInsuranceByIdController);
-postRouter.get("/byUserId", insuranceController.findInsurancesByUserIdController);
+postRouter.get("/byIdInsurance/:id", insuranceController.findInsuranceByIdController);
+postRouter.get("/byUserId/:id", insuranceController.findInsurancesByUserIdController);
 postRouter.patch("/update/:id", insuranceController.updateInsuranceController);
 postRouter.delete("/delete/:id", insuranceController.deleteInsuranceController);
 postRouter.patch("/:id/like", insuranceController.likeInsuranceController);

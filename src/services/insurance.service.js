@@ -106,7 +106,7 @@ async function searchPostService(title) {
 async function findInsuranceByIdService(id) {
   const insurance = await insuranceRepositories.findInsuranceByIdRepository(id);
 
-  if (!insurance) throw new Error("Post not found");
+  if (!insurance) throw new Error("Insurances not found");
 
   return {
     id: insurance._id,
@@ -118,16 +118,16 @@ async function findInsuranceByIdService(id) {
 
 async function findInsurancesByUserIdService(id) {
   const insurance = await insuranceRepositories.findInsurancesByUserIdRepository(id);
-
+  console.log(insurance);
   return {
-    postsByUser: posts.map((post) => ({
-      id: post._id,
-      user: insurance.user,
-      numapolice: insurance.numapolice,
-      coberturas: insurance.coberturas,
-      premio: insurance.premio,
-      createdAt: insurance.createdAt
-    })),
+      insurancesByUser: insurance.map((seguro) => ({
+        id: seguro._id,
+        user: seguro.user,
+        numapolice: seguro.numapolice,
+        coberturas: seguro.coberturas,
+        premio: seguro.premio,
+        createdAt: seguro.createdAt
+      })),
   };
 }
 
