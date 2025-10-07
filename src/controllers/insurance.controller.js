@@ -1,13 +1,10 @@
 import InsuranceService from "../services/insurance.service.js";
 
 async function createInsuranceController(req, res) {
-  const { numapolice, coberturas, premio } = req.body;
-  const userId = req.userId;
-
+  const { user, numapolice, coberturas, premio } = req.body;
   try {
     const Insurance = await InsuranceService.createInsuranceService(
-      { numapolice, coberturas, premio },
-      userId
+      { user, numapolice, coberturas, premio }
     );
     return res.status(201).send(Insurance);
   } catch (e) {
@@ -50,9 +47,9 @@ async function searchInsuranceController(req, res) {
 
 async function findInsuranceByIdController(req, res) {
   const { id } = req.params;
-
   try {
     const insurance = await InsuranceService.findInsuranceByIdService(id);
+    console.log(insurance);
     return res.send(insurance);
   } catch (e) {
     res.status(404).send(e.message);
@@ -60,7 +57,7 @@ async function findInsuranceByIdController(req, res) {
 }
 
 async function findInsurancesByUserIdController(req, res) {
-  const id = req.userId;
+  const id = req.params.id;
   try {
     const insurances = await InsuranceService.findInsurancesByUserIdService(id);
     return res.send(insurances);
@@ -70,14 +67,11 @@ async function findInsurancesByUserIdController(req, res) {
 }
 
 async function updateInsuranceController(req, res) {
-  const { numapolice, coberturas, premio } = req.body;
-  const { id } = req.params;
-  const userId = req.userId;
-
+  const { numapolice, coberturas, premio, id, userId } = req.body;
   try {
     await InsuranceService.updateInsuranceService(id, numapolice, coberturas, premio, userId);
 
-    return res.send({ message: "Insurance successfully updated!" });
+    return res.send({ message: "Seguro atualizado com sucesso!" });
   } catch (e) {
     return res.status(500).send(e.message);
   }
@@ -85,10 +79,8 @@ async function updateInsuranceController(req, res) {
 
 async function deleteInsuranceController(req, res) {
   const { id } = req.params;
-  const userId = req.userId;
-
   try {
-    await InsuranceService.deleteInsuranceService(id, userId);
+    await InsuranceService.deleteInsuranceService(id);
     return res.send({ message: "Insurance deleted successfully" });
   } catch (err) {
     return res.status(500).send(err.message);

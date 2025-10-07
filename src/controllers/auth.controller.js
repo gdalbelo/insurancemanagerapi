@@ -4,8 +4,9 @@ const loginController = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const token = await authService.loginService({ email, password });
-    return res.send(token);
+    const {token, userData} = await authService.loginService({ email, password });
+    console.log(userData);
+    return res.send({token, user: userData});
   } catch (e) {
     return res.status(401).send(e.message);
   }

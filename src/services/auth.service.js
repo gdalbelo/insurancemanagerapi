@@ -19,7 +19,7 @@ const loginService = async ({ email, password }) => {
 
   const token = generateToken(user.id);
 
-  return token;
+  return {token, userData: user};
 };
 
 const signup = async (body) => {
