@@ -7,10 +7,9 @@ async function createUserService({
   username,
   email,
   password,
-  avatar,
-  background,
+  perfil
 }) {
-  if (!username || !name || !email || !password || !avatar || !background)
+  if (!username || !name || !email || !password || !perfil)
     throw new Error("Submit all fields for registration");
 
   const foundUser = await userRepositories.findByEmailUserRepository(email);
@@ -22,8 +21,7 @@ async function createUserService({
     username,
     email,
     password,
-    avatar,
-    background,
+    perfil
   });
 
   if (!user) throw new Error("Error creating User");

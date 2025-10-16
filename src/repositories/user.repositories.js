@@ -7,16 +7,14 @@ const createUserRepository = ({
   username,
   email,
   password,
-  avatar,
-  background,
+  perfil
 }) =>
   User.create({
     name,
     username,
     email,
     password,
-    avatar,
-    background,
+    perfil,
   });
 
 const findAllUserRepository = () => User.find();
