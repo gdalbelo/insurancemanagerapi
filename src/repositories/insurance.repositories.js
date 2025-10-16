@@ -1,7 +1,9 @@
 import Insurance from "../models/Insurance.js";
+import mongoose from "mongoose";
+import { MongoClient, ObjectId } from "mongodb";
 
-function createInsuranceRepository(numapolice, coberturas, premio, userId) {
-  return Insurance.create({ user: userId, numapolice, coberturas, premio });
+function createInsuranceRepository(user, numapolice, coberturas, premio) {
+  return Insurance.create({ user, numapolice, coberturas, premio });
 }
 
 function findAllInsurancesRepository(offset, limit) {
@@ -16,7 +18,9 @@ function topNewsRepository() {
 }
 
 function findInsuranceByIdRepository(id) {
-  return Insurance.user.findById(id).populate("user");
+  let idUser = new ObjectId(id);
+  console.log('idUser: ' + idUser);
+  return Insurance.find({"user": idUser});
 }
 
 function countInsurances() {
@@ -32,21 +36,20 @@ function searchInsuranceRepository(title) {
 }
 
 function findInsurancesByUserIdRepository(id) {
+  const objectId = new ObjectId(id);
   return Insurance.find({
-    user: id,
-  })
-    .populate("user");
+    user: objectId
+  }).populate("user");;
 }
 
-function updateInsuranceRepository(id, title, banner, text) {
+
+function updateInsuranceRepository(id, numapolice, coberturas, premio, userId) {
   return Insurance.findOneAndUpdate(
     {
       _id: id,
-    },
+    },  
     {
-      title,
-      banner,
-      text,
+      userId, numapolice, coberturas, premio
     },
     {
       rawResult: true,

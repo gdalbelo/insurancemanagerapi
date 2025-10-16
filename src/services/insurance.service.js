@@ -1,20 +1,21 @@
 import insuranceRepositories from "../repositories/insurance.repositories.js";
+import User from "../schemas/User.js";
 
-async function createInsuranceService({ numapolice, coberturas, premio }, userId) {
-  console.log(numapolice, coberturas, premio);
-  if (!numapolice || !coberturas || !premio)
+async function createInsuranceService({ user, numapolice, coberturas, premio }) {
+  console.log('Dados: ' + user, numapolice, coberturas, premio);
+  if (!user || !numapolice || !coberturas || !premio)
     throw new Error("Envie todos os campos para registrar.");
 
   const { id } = await insuranceRepositories.createInsuranceRepository(
+    user,
     numapolice,
     coberturas,
-    premio,
-    userId
+    premio
   );
 
   return {
     message: "Seguro criado com sucesso!",
-    post: { id, numapolice, coberturas, premio },
+    user: { id, user, numapolice, coberturas, premio },
   };
 }
 
@@ -107,20 +108,17 @@ async function findInsuranceByIdService(id) {
   const insurance = await insuranceRepositories.findInsuranceByIdRepository(id);
 
   if (!insurance) throw new Error("Insurances not found");
-
+  console.log('Seguros: ' + insurance);
   return {
-    id: insurance._id,
-    numapolice: insurance.numapolice,
-    coberturas: insurance.coberturas,
-    premio: insurance.premio
+    insurance
   };
 }
 
 async function findInsurancesByUserIdService(id) {
-  const insurance = await insuranceRepositories.findInsurancesByUserIdRepository(id);
-  console.log(insurance);
+  const insurances = await insuranceRepositories.findInsurancesByUserIdRepository(id);
+
   return {
-      insurancesByUser: insurance.map((seguro) => ({
+      insurancesByUser: insurances.map((seguro) => ({
         id: seguro._id,
         user: seguro.user,
         numapolice: seguro.numapolice,
@@ -131,25 +129,26 @@ async function findInsurancesByUserIdService(id) {
   };
 }
 
-async function updatePostService(id, title, banner, text, userId) {
-  if (!title && !banner && !text)
-    throw new Error("Submit at least one field to update the post");
+async function updateInsuranceService(id, numapolice, coberturas, premio, userId) {
 
-  const post = await insuranceRepositories.findInsuranceByIdRepository(id);
+  if (!numapolice || !coberturas || !premio)
+    throw new Error("Envie pelo menos um campo para atualizar o seguro");
 
-  if (!post) throw new Error("Post not found");
+  const insurance = await insuranceRepositories.findInsuranceByIdRepository(id);
 
-  if (post.user._id != userId) throw new Error("You didn't create this post");
+  if (!insurance) throw new Error("Seguro não encontrado");
 
-  await insuranceRepositories.updatePostRepository(id, title, banner, text);
+  if (insurance.user != userId) throw new Error("Esse usuário não criou esse seguro.");
+
+  await insuranceRepositories.updateInsuranceRepository(id, numapolice, coberturas, premio, userId);
 }
 
-async function deleteInsuranceService(id, userId) {
+async function deleteInsuranceService(id) {
   const insurance = await insuranceRepositories.findInsuranceByIdRepository(id);
 
   if (!insurance) throw new Error("Seguro não encontrado.");
 
-  if (insurance.user._id != userId) throw new Error("Não foi você quem criou esse seguro.");
+  //if (insurance.user._id != userId) throw new Error("Não foi você quem criou esse seguro.");
 
   await insuranceRepositories.deleteInsuranceRepository(id);
 }
@@ -190,7 +189,7 @@ export default {
   searchPostService,
   findInsuranceByIdService,
   findInsurancesByUserIdService,
-  updatePostService,
+  updateInsuranceService,
   deleteInsuranceService,
   likePostService,
   commentPostService,

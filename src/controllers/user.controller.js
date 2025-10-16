@@ -27,10 +27,20 @@ async function findAllUserController(req, res) {
   }
 }
 
+async function findUserData(req, res) {
+  try {
+    let { id } = req.params;
+    const user = await userService.findUserPersonalDataService(id);
+    return res.send(user);
+  } catch (e) {
+    return res.status(404).send(e.message);
+  }
+}
+
 async function findUserByIdController(req, res) {
   try {
     const user = await userService.findUserByIdService(
-      req.id,
+      req.params.id,
       req.userId
     );
     return res.send(user);
@@ -41,15 +51,12 @@ async function findUserByIdController(req, res) {
 
 async function updateUserController(req, res) {
   try {
-    const { name, username, email, password, avatar, background } = req.body;
-    const { id: userId } = req.params;
-    const userIdLogged = req.userId;
+    const { name, username, email, perfil } = req.body;
+    const { id } = req.params;
 
-    const response = await userService.updateUserService(
-      { name, username, email, password, avatar, background },
-      userId,
-      userIdLogged
-    );
+    console.log(`Nome: ${name} Username: ${username} Email: ${email} id: ${id} Perfil: ${perfil}`);
+
+    const response = await userService.updateUserService(name, username, email, perfil, id);
 
     return res.send(response);
   } catch (e) {
@@ -62,4 +69,5 @@ export default {
   findAllUserController,
   findUserByIdController,
   updateUserController,
+  findUserData,
 };

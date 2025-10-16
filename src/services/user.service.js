@@ -1,4 +1,4 @@
-import authService from "../services/auth.service.js";
+import authService from "./auth.service.js";
 import bcrypt from "bcrypt";
 import userRepositories from "../repositories/user.repositories.js";
 
@@ -54,31 +54,29 @@ async function findUserByIdService(userIdParam, userIdLogged = true) {
 
   const user = await userRepositories.findByIdUserRepository(idParam);
 
-  if (!user) throw new Error("User not found");
+  if (!user) throw new Error("Usuário não encontrado");
 
   return user;
 }
 
-async function updateUserService(
-  id, name, username, email, password, avatar, background
-) {
-  if (!name && !username && !email && !password && !avatar && !background)
-    throw new Error("Submit at least one field to update the user");
+async function findUserPersonalDataService(idUser) {
+  const user = await userRepositories.findByIdUserRepository(idUser);
+  if (!user) throw new Error("User não encontrado");
+  return user;
+}
+
+async function updateUserService(name, username, email, perfil, id) {
+  if (!name && !username && !email)
+    throw new Error("Envie pelo menos um campo para atualizar o usuário");
 
   const user = await userRepositories.findByIdUserRepository(id);
-
-  if (user._id != userIdLogged) throw new Error("You cannot update this user");
-
-  if (password) password = await bcrypt.hash(password, 10);
 
   await userRepositories.updateUserRepository(
     id,
     name,
     username,
     email,
-    password,
-    avatar,
-    background
+    perfil
   );
 
   return { message: "User successfully updated!" };
@@ -89,4 +87,5 @@ export default {
   findAllUserService,
   findUserByIdService,
   updateUserService,
+  findUserPersonalDataService,
 };

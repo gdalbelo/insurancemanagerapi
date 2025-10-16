@@ -22,14 +22,10 @@ const UserSchema = new mongoose.Schema({
     required: true,
     select: true,
   },
-  avatar: {
+  perfil: {
     type: String,
     required: true,
-  },
-  background: {
-    type: String,
-    required: true,
-  },
+  }
 });
 
 UserSchema.pre("save", async function (next) {
