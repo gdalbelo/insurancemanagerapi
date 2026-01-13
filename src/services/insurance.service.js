@@ -1,9 +1,9 @@
 import insuranceRepositories from "../repositories/insurance.repositories.js";
 import User from "../schemas/User.js";
 
-async function createInsuranceService({ user, numapolice, coberturas, premio, perfil = 'Subscritor' }) {
-  console.log('Dados: ' + user, numapolice, coberturas, premio, perfil);
-  if (!user || !numapolice || !coberturas || !premio || !perfil)
+async function createInsuranceService({ user, numapolice, coberturas, premio }) {
+  console.log('Dados: ' + user, numapolice, coberturas, premio);
+  if (!user || !numapolice || !coberturas || !premio)
     throw new Error("Envie todos os campos para registrar.");
 
   const { id } = await insuranceRepositories.createInsuranceRepository(
