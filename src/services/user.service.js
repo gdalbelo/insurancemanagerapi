@@ -63,7 +63,7 @@ async function findUserPersonalDataService(idUser) {
   return user;
 }
 
-async function updateUserService(name, username, email, perfil, id) {
+async function updateUserService(name, username, email, id) {
   if (!name && !username && !email)
     throw new Error("Envie pelo menos um campo para atualizar o usuário");
 
@@ -73,8 +73,7 @@ async function updateUserService(name, username, email, perfil, id) {
     id,
     name,
     username,
-    email,
-    perfil
+    email
   );
 
   return { message: "User successfully updated!" };

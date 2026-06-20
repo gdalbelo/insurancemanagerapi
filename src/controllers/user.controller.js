@@ -50,12 +50,12 @@ async function findUserByIdController(req, res) {
 
 async function updateUserController(req, res) {
   try {
-    const { name, username, email, perfil } = req.body;
+    const { name, username, email } = req.body;
     const { id } = req.params;
 
-    console.log(`Nome: ${name} Username: ${username} Email: ${email} id: ${id} Perfil: ${perfil}`);
+    console.log(`Nome: ${name} Username: ${username} Email: ${email} id: ${id}`);
 
-    const response = await userService.updateUserService(name, username, email, perfil, id);
+    const response = await userService.updateUserService(name, username, email, id);
 
     return res.send(response);
   } catch (e) {
