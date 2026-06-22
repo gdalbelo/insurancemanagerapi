@@ -6,15 +6,13 @@ const createUserRepository = ({
   name,
   username,
   email,
-  password,
-  perfil
+  password
 }) =>
   User.create({
     name,
     username,
     email,
-    password,
-    perfil,
+    password
   });
 
 const findAllUserRepository = () => User.find();
@@ -25,8 +23,7 @@ const updateUserRepository = (
   id,
   name,
   username,
-  email,
-  perfil
+  email
 ) =>
   User.findOneAndUpdate(
     {
@@ -35,8 +32,7 @@ const updateUserRepository = (
     {
       name,
       username,
-      email,
-      perfil
+      email
     },
     {
       rawResult: true,

@@ -21,10 +21,6 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
     select: true,
-  },
-  perfil: {
-    type: String,
-    required: true,
   }
 });
 

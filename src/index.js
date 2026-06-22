@@ -15,6 +15,7 @@ const app = express();
 connectDatabase();
 app.use(express.json());
 app.use("/user", userRoute);
+app.use("/insured", insuredRoute);
 app.use("/auth", authRoute);
 app.use("/news", insuran+ ceRoute);
 app.use("/doc", swaggerRoute);
