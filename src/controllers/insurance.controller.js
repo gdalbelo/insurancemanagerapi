@@ -1,10 +1,10 @@
 import InsuranceService from "../services/insurance.service.js";
 
 async function createInsuranceController(req, res) {
-  const { user, numapolice, coberturas, premio } = req.body;
+  const { user, numapolice, coberturas, premio, segurado } = req.body;
   try {
     const Insurance = await InsuranceService.createInsuranceService(
-      { user, numapolice, coberturas, premio }
+      { user, numapolice, coberturas, premio, segurado }
     );
     return res.status(201).send(Insurance);
   } catch (e) {
@@ -67,9 +67,9 @@ async function findInsurancesByUserIdController(req, res) {
 }
 
 async function updateInsuranceController(req, res) {
-  const { numapolice, coberturas, premio, id, userId } = req.body;
+  const { numapolice, coberturas, premio, segurado, id, userId } = req.body;
   try {
-    await InsuranceService.updateInsuranceService(id, numapolice, coberturas, premio, userId);
+    await InsuranceService.updateInsuranceService(id, numapolice, coberturas, premio, segurado, userId);
 
     return res.send({ message: "Seguro atualizado com sucesso!" });
   } catch (e) {

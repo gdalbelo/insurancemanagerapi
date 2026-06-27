@@ -2,8 +2,8 @@ import Insurance from "../models/Insurance.js";
 import mongoose from "mongoose";
 import { MongoClient, ObjectId } from "mongodb";
 
-function createInsuranceRepository(user, numapolice, coberturas, premio) {
-  return Insurance.create({ user, numapolice, coberturas, premio });
+function createInsuranceRepository(user, numapolice, coberturas, premio, segurado) {
+  return Insurance.create({ user, numapolice, coberturas, premio, segurado });
 }
 
 function findAllInsurancesRepository(offset, limit) {
@@ -43,13 +43,13 @@ function findInsurancesByUserIdRepository(id) {
 }
 
 
-function updateInsuranceRepository(id, numapolice, coberturas, premio, userId) {
+function updateInsuranceRepository(id, numapolice, coberturas, premio, segurado, userId) {
   return Insurance.findOneAndUpdate(
     {
       _id: id,
     },  
     {
-      userId, numapolice, coberturas, premio
+      userId, numapolice, coberturas, premio, segurado
     },
     {
       rawResult: true,

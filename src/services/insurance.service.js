@@ -1,16 +1,17 @@
 import insuranceRepositories from "../repositories/insurance.repositories.js";
 import User from "../schemas/User.js";
 
-async function createInsuranceService({ user, numapolice, coberturas, premio }) {
-  console.log('Dados: ' + user, numapolice, coberturas, premio);
-  if (!user || !numapolice || !coberturas || !premio)
+async function createInsuranceService({ user, numapolice, coberturas, premio, segurado }) {
+  console.log('Dados: ' + user, numapolice, coberturas, premio, segurado);
+  if (!user || !numapolice || !coberturas || !premio || !segurado)
     throw new Error("Envie todos os campos para registrar.");
 
   const { id } = await insuranceRepositories.createInsuranceRepository(
     user,
     numapolice,
     coberturas,
-    premio
+    premio,
+    segurado
   );
 
   return {
@@ -129,9 +130,9 @@ async function findInsurancesByUserIdService(id) {
   };
 }
 
-async function updateInsuranceService(id, numapolice, coberturas, premio, userId) {
+async function updateInsuranceService(id, numapolice, coberturas, premio, segurado, userId) {
 
-  if (!numapolice || !coberturas || !premio)
+  if (!numapolice || !coberturas || !premio || !segurado)
     throw new Error("Envie pelo menos um campo para atualizar o seguro");
 
   const insurance = await insuranceRepositories.findInsuranceByIdRepository(id);
@@ -140,7 +141,7 @@ async function updateInsuranceService(id, numapolice, coberturas, premio, userId
 
   if (insurance.user != userId) throw new Error("Esse usuário não criou esse seguro.");
 
-  await insuranceRepositories.updateInsuranceRepository(id, numapolice, coberturas, premio, userId);
+  await insuranceRepositories.updateInsuranceRepository(id, numapolice, coberturas, premio, segurado, userId);
 }
 
 async function deleteInsuranceService(id) {

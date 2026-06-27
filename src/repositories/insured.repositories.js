@@ -2,15 +2,23 @@ import Insured from "../models/Insured.js";
 import mongoose from "mongoose";
 import { MongoClient, ObjectId } from "mongodb";
 
-function createInsuredRepository(fullname, cpfcnpj, dtnascimento, estadocivil, genero, profissao, contato, logradouro, numero, complemento, bairro, cep) {
-  return Insured.create({fullname, cpfcnpj, dtnascimento, estadocivil, genero, profissao, contato, logradouro, numero, complemento, bairro, cep});
+function createInsuredRepository(fullname, cpfcnpj, dtnascimento, estadocivil, genero, profissao, contato, logradouro, numero, complemento, bairro, cep, userid) {
+  console.log('createInsuredRepository: ', fullname, cpfcnpj, dtnascimento, estadocivil, genero, profissao, contato, logradouro, numero, complemento, bairro, cep, userid);
+  return Insured.create({fullname, cpfcnpj, dtnascimento, estadocivil, genero, profissao, contato, logradouro, numero, complemento, bairro, cep, userid});
+}
+
+function findInsuredNameById(id) {
+  let idUser = new ObjectId(id);
+  console.log('idUser: ' + idUser);
+  return Insured.find({
+    _id: idUser
+  });
 }
 
 function findAllInsuredsRepository(offset, limit) {
   return Insured.find()
     .sort({ _id: -1 })
     .skip(offset)
-    .populate("user");
 }
 
 function topNewsRepository() {
@@ -43,13 +51,13 @@ function findInsuredsByUserIdRepository(id) {
 }
 
 
-function updateInsuredRepository(id, numapolice, coberturas, premio, userId) {
+function updateInsuredRepository(id, numapolice, coberturas, premio, segurado, userId) {
   return Insured.findOneAndUpdate(
     {
       _id: id,
     },  
     {
-      userId, numapolice, coberturas, premio
+      userId, numapolice, coberturas, premio, segurado
     },
     {
       rawResult: true,
@@ -58,7 +66,7 @@ function updateInsuredRepository(id, numapolice, coberturas, premio, userId) {
 }
 
 function deleteInsuredRepository(id) {
-  return Insured.findOneAndDelete({ _id: id }).populate("user");
+  return Insured.findOneAndDelete({ _id: id });
 }
 
 function likesRepository(id, userId) {
@@ -130,6 +138,7 @@ export default {
   createInsuredRepository,
   findAllInsuredsRepository,
   topNewsRepository,
+  findInsuredNameById,
   findInsuredByIdRepository,
   searchInsuredRepository,
   findInsuredsByUserIdRepository,

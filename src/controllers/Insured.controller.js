@@ -1,13 +1,17 @@
 import InsuredService from "../services/Insured.service.js";
 
 async function createInsuredController(req, res) {
-  const { fullname, cpfcnpj, dtnascimento, estadocivil, genero, profissao, contato, logradouro, numero, complemento, bairro, cep } = req.body;
+  console.log(req.body);
+  const { fullname, cpfcnpj, dtnascimento, estadocivil, genero, profissao, contato, logradouro, numero, complemento, bairro, cep, segurado, userid } = req.body;
+     console.log('createInsuredController: ', fullname, cpfcnpj, dtnascimento, estadocivil, genero, profissao, contato, logradouro, numero, complemento, bairro, cep, segurado, userid);
+    //return;
+
   try {
     const Insured = await InsuredService.createInsuredService(
-      { fullname, cpfcnpj, dtnascimento, estadocivil, genero, profissao, contato, logradouro, numero, complemento, bairro, cep }
+      {fullname, cpfcnpj, dtnascimento, estadocivil, genero, profissao, contato, logradouro, numero, complemento, bairro, cep, segurado, userid}
     );
     return res.status(201).send(Insured);
-  } catch (e) {
+  } catch (e) { 
     res.status(500).send(e.message);
   }
 }
@@ -17,7 +21,7 @@ async function findAllInsuredsController(req, res) {
   const currentUrl = req.baseUrl;
 
   try {
-    const Insureds = await InsuredService.findAllInsuredsService();
+    const Insureds = await InsuredService.findAllinsuredsService();
     return res.send(Insureds);
   } catch (e) {
     res.status(500).send(e.message);
@@ -45,6 +49,17 @@ async function searchInsuredController(req, res) {
   }
 }
 
+async function findInsuredById(req, res) {
+  const { id } = req.query;
+
+  try {
+    const insured = await InsuredService.findInsuredById(id);
+    return res.send(insured);
+  } catch (e) {
+    
+  }
+}
+
 async function findInsuredByIdController(req, res) {
   const { id } = req.params;
   try {
@@ -59,17 +74,17 @@ async function findInsuredByIdController(req, res) {
 async function findInsuredsByUserIdController(req, res) {
   const id = req.params.id;
   try {
-    const Insureds = await InsuredService.findInsuredsByUserIdService(id);
-    return res.send(Insureds);
+    //onst Insureds = await InsuredService.findInsuredsByUserIdService(id);
+    return res.send(id);
   } catch (e) {
     return res.status(500).send(e.message);
   }
 }
 
 async function updateInsuredController(req, res) {
-  const { numapolice, coberturas, premio, id, userId } = req.body;
+  const { numapolice, coberturas, premio, id, segurado, userId } = req.body;
   try {
-    await InsuredService.updateInsuredService(id, numapolice, coberturas, premio, userId);
+    await InsuredService.updateInsuredService(id, numapolice, coberturas, premio, segurado, userId);
 
     return res.send({ message: "Seguro atualizado com sucesso!" });
   } catch (e) {
@@ -134,6 +149,7 @@ export default {
   findAllInsuredsController,
   topNewsController,
   searchInsuredController,
+  findInsuredById,
   findInsuredByIdController,
   findInsuredsByUserIdController,
   updateInsuredController,

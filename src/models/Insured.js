@@ -13,9 +13,7 @@ const InsuredSchema = new mongoose.Schema({
   },
   dtnascimento: {
     type: Date,
-    required: true,
-    unique: true,
-    lowercase: true,
+    required: true
   },
   estadocivil: {
     type: String,
@@ -54,14 +52,18 @@ const InsuredSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  cep: {
+    type: String,
+    required: false,
+  },
+  userid: {
+    type: String,
+    required: false
+  },
   createdAt: {
     type: Date,
     default: Date.now(),
   },
-});
-
-InsuredSchema.pre("save", async function (next) {
-  next();
 });
 
 const Insured = mongoose.model("Insured", InsuredSchema);

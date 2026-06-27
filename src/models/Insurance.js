@@ -18,6 +18,10 @@ const InsuranceSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  segurado: {
+    type: String,
+    required: true,
+  },
   createdAt: {
     type: Date,
     default: Date.now(),

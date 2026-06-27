@@ -9,7 +9,7 @@ const router = Router();
 
 router.use("/user", userRouter);
 router.use("/insurances", insuranceRouter);
-router.use("/insureds", insuredRouter);
+router.use("/insured", insuredRouter);
 router.use("/auth", authRouter);
 //router.use("/doc", swaggerRouter);
 

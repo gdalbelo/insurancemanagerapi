@@ -16,6 +16,7 @@ insuredRouter.get("/:ByUserId", insuredController.findInsuredsByUserIdController
 insuredRouter.post("/create", insuredController.createInsuredController);
 
 //insuredRouter.use(validId);
+insuredRouter.get("/insuredById/:id", insuredController.findInsuredById);
 insuredRouter.get("/byIdInsurance/:id?", insuredController.findInsuredByIdController);
 insuredRouter.get("/byUserId/:id", insuredController.findInsuredsByUserIdController);
 insuredRouter.put("/update/:id", insuredController.updateInsuredController);

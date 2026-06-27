@@ -1,13 +1,13 @@
 import insuredRepositories from "../repositories/insured.repositories.js";
 import User from "../schemas/User.js";
 
-async function createInsuredService({ user, fullname, cpfcnpj, dtnascimento, estadocivil, genero, profissao, contato, logradouro, numero, complemento, bairro, cep }) {
-  console.log('Dados: ' + fullname, cpfcnpj, dtnascimento, estadocivil, genero, profissao, contato, logradouro, numero, complemento, bairro, cep);
-  if (!user || !numapolice || !coberturas || !premio)
-    throw new Error("Envie todos os campos para registrar.");
+async function createInsuredService({fullname, cpfcnpj, dtnascimento, estadocivil, genero, profissao, contato, logradouro, numero, complemento, bairro, cep, segurado, userid}) {
+  console.log('Dados: ' +  fullname, cpfcnpj, dtnascimento, estadocivil, genero, profissao, contato, logradouro, numero, complemento, bairro, cep, segurado, userid);
+  //return;
+  // if (!userid || !fullname || !cpfcnpj || !dtnascimento || !estadocivil || !genero || !profissao || !contato || !logradouro || !numero || !complemento || !bairro || !cep)
+  //   throw new Error("Envie todos os campos para registrar.");
 
   const { id } = await insuredRepositories.createInsuredRepository(
-    user,
     fullname,
     cpfcnpj,
     dtnascimento,
@@ -19,12 +19,16 @@ async function createInsuredService({ user, fullname, cpfcnpj, dtnascimento, est
     numero,
     complemento,
     bairro,
-    cep
+    cep,
+    segurado,
+    userid
   );
+
+  console.log('Id criado: ', id);
 
   return {
     message: "Segurado criado com sucesso!",
-    user: { id, user, numapolice, coberturas, premio },
+    user: { id, userid },
   };
 }
 
@@ -40,9 +44,9 @@ async function findAllinsuredsService(limit, offset, currentUrl) {
     offset = 0;
   }
 
-  const insureds = await insuredRepositories.findAllinsuredsRepository(offset, limit);
+  const insureds = await insuredRepositories.findAllInsuredsRepository(offset, limit);
 
-  const total = await insuredRepositories.countinsureds();
+  const total = await insuredRepositories.countInsureds();
 
   const next = offset + limit;
   const nextUrl =
@@ -63,13 +67,27 @@ async function findAllinsuredsService(limit, offset, currentUrl) {
 
     results: insureds.map((insured) => ({
       id: insured._id,
-      user: insured.user,
-      numapolice: insured.numapolice,
-      coberturas: insured.coberturas,
-      premio: insured.premio,
-      createdAt: insured.createdAt
-    })),
+      createdAt: insured.createdAt,
+      fullname: insured.fullname,
+      cpfcnpj: insured.cpfcnpj,
+      dtnascimento: insured.dtnascimento,
+      estadocivil: insured.estadocivil,
+      genero: insured.genero,
+      profissao: insured.profissao,
+      contato: insured.contato,
+      logradouro: insured.logradouro,
+      numero: insured.numero,
+      complemento: insured.complemento,
+      bairro: insured.bairro,
+      cep: insured.cep,
+      userid: insured.userid,
+      createdAt: insured.createdAt})),
   };
+}
+
+async function getInsuredNameById(id) {
+  const insured = insuredRepositories.findInsuredNameById(id);
+  return insured;
 }
 
 async function topNewsService() {
@@ -114,7 +132,7 @@ async function searchPostService(title) {
 }
 
 async function findinsuredByIdService(id) {
-  const insured = await insuredRepositories.findinsuredByIdRepository(id);
+  const insured = await insuredRepositories.findInsuredByIdRepository(id);
 
   if (!insured) throw new Error("insureds not found");
   console.log('Seguros: ' + insured);
@@ -129,37 +147,46 @@ async function findinsuredsByUserIdService(id) {
   return {
       insuredsByUser: insureds.map((seguro) => ({
         id: seguro._id,
-        user: seguro.user,
-        numapolice: seguro.numapolice,
-        coberturas: seguro.coberturas,
-        premio: seguro.premio,
-        createdAt: seguro.createdAt
-      })),
-  };
+        userid: seguro.userid,
+        fullname: seguro.fullname,
+        dtnascimento: seguro.dtnascimento,
+        cpfcnpj: seguro.cpfcnpj,
+        estadocivil: seguro.estadocivil,
+        genero: seguro.genero,
+        profissao: seguro.profissao,
+        contato: seguro.contato,
+        logradouro: seguro.logradouro,
+        numero: seguro.numero,
+        complemento: seguro.complemento,
+        bairro: seguro.bairro,
+        cep: seguro.cep,
+        userid: seguro.userid
+      }))
+  }
 }
 
-async function updateinsuredService(id, numapolice, coberturas, premio, userId) {
+async function updateinsuredService(id, numapolice, coberturas, premio, segurado, userId) {
 
-  if (!numapolice || !coberturas || !premio)
+  if (!numapolice || !coberturas || !premio || !segurado)
     throw new Error("Envie pelo menos um campo para atualizar o seguro");
 
-  const insured = await insuredRepositories.findinsuredByIdRepository(id);
+  const insured = await insuredRepositories.findInsuredByIdRepository(id);
 
   if (!insured) throw new Error("Seguro não encontrado");
 
   if (insured.user != userId) throw new Error("Esse usuário não criou esse seguro.");
 
-  await insuredRepositories.updateinsuredRepository(id, numapolice, coberturas, premio, userId);
+  await insuredRepositories.updateinsuredRepository(id, numapolice, coberturas, premio, segurado, userId);
 }
 
-async function deleteinsuredService(id) {
-  const insured = await insuredRepositories.findinsuredByIdRepository(id);
+async function deleteInsuredService(id) {
+  const insured = await insuredRepositories.findInsuredByIdRepository(id);
 
   if (!insured) throw new Error("Seguro não encontrado.");
 
   //if (insured.user._id != userId) throw new Error("Não foi você quem criou esse seguro.");
 
-  await insuredRepositories.deleteinsuredRepository(id);
+  await insuredRepositories.deleteInsuredRepository(id);
 }
 
 async function likePostService(id, userId) {
@@ -176,7 +203,7 @@ async function likePostService(id, userId) {
 async function commentPostService(postId, message, userId) {
   if (!message) throw new Error("Write a message to comment");
 
-  const post = await insuredRepositories.findinsuredByIdRepository(postId);
+  const post = await insuredRepositories.findInsuredByIdRepository(postId);
 
   if (!post) throw new Error("Post not found");
 
@@ -184,7 +211,7 @@ async function commentPostService(postId, message, userId) {
 }
 
 async function commentDeletePostService(postId, userId, idComment) {
-  const post = await insuredRepositories.findinsuredByIdRepository(postId);
+  const post = await insuredRepositories.findInsuredByIdRepository(postId);
 
   if (!post) throw new Error("Post not found");
 
@@ -196,10 +223,11 @@ export default {
   findAllinsuredsService,
   topNewsService,
   searchPostService,
+  getInsuredNameById,
   findinsuredByIdService,
   findinsuredsByUserIdService,
   updateinsuredService,
-  deleteinsuredService,
+  deleteInsuredService,
   likePostService,
   commentPostService,
   commentDeletePostService,
