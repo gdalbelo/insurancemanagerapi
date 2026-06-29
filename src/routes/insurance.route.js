@@ -6,6 +6,8 @@ import { Router } from "express";
 
 const insuranceRouter = Router();
 
+insuranceRouter.get("/coberturas", insuranceController.buscaCoberturas);
+
 insuranceRouter.get("/", insuranceController.findAllInsurancesController);
 insuranceRouter.get("/top", insuranceController.topNewsController);
 insuranceRouter.get("/search", insuranceController.searchInsuranceController);

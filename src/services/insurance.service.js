@@ -154,6 +154,11 @@ async function deleteInsuranceService(id) {
   await insuranceRepositories.deleteInsuranceRepository(id);
 }
 
+async function buscaCoberturas() {
+  const coberturas = await insuranceRepositories.findCoberturas();
+  return coberturas;
+}
+
 async function likePostService(id, userId) {
   const postLiked = await postService.likesService(id, userId);
 
@@ -184,6 +189,7 @@ async function commentDeletePostService(postId, userId, idComment) {
 }
 
 export default {
+  buscaCoberturas,
   createInsuranceService,
   findAllInsurancesService,
   topNewsService,

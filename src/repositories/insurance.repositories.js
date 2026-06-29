@@ -1,4 +1,5 @@
 import Insurance from "../models/Insurance.js";
+import Cobertura from "../models/cobertura.js"
 import mongoose from "mongoose";
 import { MongoClient, ObjectId } from "mongodb";
 
@@ -40,6 +41,10 @@ function findInsurancesByUserIdRepository(id) {
   return Insurance.find({
     user: objectId
   }).populate("user");;
+}
+
+function findCoberturas() {
+  return Cobertura.find({});
 }
 
 
@@ -140,4 +145,5 @@ export default {
   commentsRepository,
   commentsDeleteRepository,
   countInsurances,
+  findCoberturas
 };

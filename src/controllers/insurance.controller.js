@@ -1,3 +1,4 @@
+import insuranceService from "../services/insurance.service.js";
 import InsuranceService from "../services/insurance.service.js";
 
 async function createInsuranceController(req, res) {
@@ -100,6 +101,15 @@ async function likeInsuranceController(req, res) {
   }
 }
 
+async function buscaCoberturas(req, res) {
+  try {
+    const response = await insuranceService.buscaCoberturas();
+    return res.send({response});
+  } catch (e) {
+    return res.status(500).send(e.message);
+  }
+}
+
 async function commentInsuranceController(req, res) {
   const { id: InsuranceId } = req.params;
   const { message } = req.body;
@@ -130,6 +140,7 @@ async function commentDeleteInsuranceController(req, res) {
 }
 
 export default {
+  buscaCoberturas,
   createInsuranceController,
   findAllInsurancesController,
   topNewsController,
