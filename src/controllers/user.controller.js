@@ -8,7 +8,7 @@ async function createUserController(req, res) {
       name,
       username,
       email,
-      password
+      passwords
     });
     res.status(201).send(token);
   } catch (e) {
