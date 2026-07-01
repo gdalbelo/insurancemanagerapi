@@ -1,7 +1,7 @@
 import InsuredService from "../services/Insured.service.js";
 
 async function createInsuredController(req, res) {
-  console.log(req.body);
+
   const { fullname, cpfcnpj, dtnascimento, estadocivil, genero, profissao, contato, logradouro, numero, complemento, bairro, cep, segurado, userid } = req.body;
      console.log('createInsuredController: ', fullname, cpfcnpj, dtnascimento, estadocivil, genero, profissao, contato, logradouro, numero, complemento, bairro, cep, segurado, userid);
     //return;

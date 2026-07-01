@@ -9,7 +9,7 @@ function createInsuredRepository(fullname, cpfcnpj, dtnascimento, estadocivil, g
 
 function findInsuredNameById(id) {
   let idUser = new ObjectId(id);
-  console.log('idUser: ' + idUser);
+ 
   return Insured.find({
     _id: idUser
   });

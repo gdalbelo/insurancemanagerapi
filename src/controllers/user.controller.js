@@ -52,8 +52,6 @@ async function updateUserController(req, res) {
     const { name, username, email } = req.body;
     const { id } = req.params;
 
-    console.log(`Nome: ${name} Username: ${username} Email: ${email} id: ${id}`);
-
     const response = await userService.updateUserService(name, username, email, id);
 
     return res.send(response);

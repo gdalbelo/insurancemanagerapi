@@ -50,7 +50,7 @@ async function findInsuranceByIdController(req, res) {
   const { id } = req.params;
   try {
     const insurance = await InsuranceService.findInsuranceByIdService(id);
-    console.log(insurance);
+
     return res.send(insurance);
   } catch (e) {
     res.status(404).send(e.message);
